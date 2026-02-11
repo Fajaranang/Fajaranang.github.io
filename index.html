@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>pajar area</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Poppins:wght@400;600;700&family=Permanent+Marker&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --pink: #ff6b9d;
+            --purple: #9d4edd;
+            --blue: #4cc9f0;
+            --yellow: #ffd60a;
+            --orange: #ff9e00;
+            --dark: #240046;
+            --light: #fff0f6;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #000;
+            color: white;
+            overflow-x: hidden;
+            position: relative;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Video Background */
+        #video-background {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 100vh;
+            height: 100vw;
+            z-index: -2;
+            object-fit: cover;
+            transform: translate(-50%, -50%) rotate(-90deg);
+            background: #000;
+        }
+
+        /* Overlay untuk membuat teks lebih readable */
+        .video-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: -1;
+        }
+
+        /* Floating shapes background */
+        .bg-shapes {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .shape {
+            position: absolute;
+            opacity: 0.3;
+            animation: float-shapes 20s infinite ease-in-out;
+        }
+
+        /* Anime-style decorations */
+        .anime-decor {
+            position: absolute;
+            font-size: 3rem;
+            opacity: 0.6;
+            animation: float-shapes 15s infinite ease-in-out;
+            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
+        }
+
+        .shape:nth-child(1) {
+            width: 80px;
+            height: 80px;
+            background: var(--pink);
+            border-radius: 50%;
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+            box-shadow: 0 0 30px var(--pink);
+        }
+
+        .shape:nth-child(2) {
+            width: 60px;
+            height: 60px;
+            background: var(--blue);
+            clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+            top: 60%;
+            left: 80%;
+            animation-delay: 2s;
+            box-shadow: 0 0 30px var(--blue);
+        }
+
+        .shape:nth-child(3) {
+            width: 100px;
+            height: 100px;
+            background: var(--yellow);
+            clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+            top: 80%;
+            left: 20%;
+            animation-delay: 4s;
+            box-shadow: 0 0 30px var(--yellow);
+        }
+
+        .shape:nth-child(4) {
+            width: 70px;
+            height: 70px;
+            background: var(--orange);
+            border-radius: 20%;
+            top: 30%;
+            left: 70%;
+            animation-delay: 1s;
+            box-shadow: 0 0 30px var(--orange);
+        }
+
+        .shape:nth-child(5) {
+            width: 90px;
+            height: 90px;
+            background: var(--purple);
+            clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
+            top: 50%;
+            left: 5%;
+            animation-delay: 3s;
+            box-shadow: 0 0 30px var(--purple);
+        }
+
+        /* Sakura petals */
+        .sakura {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background: #ffb7c5;
+            border-radius: 50% 0 50% 0;
+            opacity: 0.7;
+            animation: fall-sakura 10s infinite ease-in;
+            box-shadow: 0 0 10px rgba(255, 183, 197, 0.8);
+        }
+
+        @keyframes fall-sakura {
+            0% {
+                transform: translateY(-100px) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes float-shapes {
+            0%, 100% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            25% {
+                transform: translate(30px, -30px) rotate(90deg);
+            }
+            50% {
+                transform: translate(-20px, 20px) rotate(180deg);
+            }
+            75% {
+                transform: translate(20px, 30px) rotate(270deg);
+            }
+        }
+
+        /* Container */
+        .content {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            padding: 2rem;
+        }
+
+        .hero-content {
+            animation: slideInUp 1s ease-out;
+        }
+
+        .hero h1 {
+            font-family: 'Bangers', cursive;
+            font-size: 5rem;
+            background: linear-gradient(45deg, var(--pink), var(--yellow), var(--blue), var(--purple));
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradient-shift 3s ease infinite;
+            text-shadow: 0 0 30px rgba(255, 107, 157, 0.5);
+            margin-bottom: 1rem;
+            letter-spacing: 3px;
+            padding: 0 20px;
+        }
+
+        .hero .subtitle {
+            font-size: 1.5rem;
+            color: var(--light);
+            margin-bottom: 2rem;
+            animation: fadeIn 1s ease-out 0.5s backwards;
+        }
+
+        .hero .cta-button {
+            display: inline-block;
+            padding: 1rem 3rem;
+            background: linear-gradient(135deg, var(--pink), var(--purple));
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.2rem;
+            box-shadow: 0 10px 30px rgba(255, 107, 157, 0.4);
+            transition: all 0.3s ease;
+            animation: bounce 2s infinite;
+            border: 3px solid white;
+        }
+
+        .hero .cta-button:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(255, 107, 157, 0.6);
+        }
+
+        /* Section Styles */
+        .section {
+            padding: 5rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-family: 'Permanent Marker', cursive;
+            font-size: 3rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .section-title::before {
+            content: '★';
+            position: absolute;
+            left: -50px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2rem;
+            color: var(--yellow);
+            animation: spin 3s linear infinite;
+        }
+
+        .section-title::after {
+            content: '★';
+            position: absolute;
+            right: -50px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2rem;
+            color: var(--pink);
+            animation: spin 3s linear infinite reverse;
+        }
+
+        /* About Section */
+        .about-card {
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(15px);
+            border: 3px solid rgba(255, 107, 157, 0.6);
+            border-radius: 30px;
+            padding: 3rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 40px rgba(255, 107, 157, 0.3);
+            animation: slideInLeft 1s ease-out;
+        }
+
+        .about-card h3 {
+            color: var(--yellow);
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            font-family: 'Permanent Marker', cursive;
+        }
+
+        .about-card p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        /* Skills Section */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .skill-card {
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(10px);
+            border: 3px solid var(--pink);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            animation: fadeInUp 0.6s ease-out backwards;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .skill-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.05) 0%, transparent 70%);
+            animation: rotate-bg 10s linear infinite;
+        }
+
+        .skill-card:nth-child(1) { animation-delay: 0.2s; border-color: var(--pink); }
+        .skill-card:nth-child(2) { animation-delay: 0.4s; border-color: var(--blue); }
+        .skill-card:nth-child(3) { animation-delay: 0.6s; border-color: var(--yellow); }
+        .skill-card:nth-child(4) { animation-delay: 0.8s; border-color: var(--orange); }
+        .skill-card:nth-child(5) { animation-delay: 1s; border-color: var(--purple); }
+        .skill-card:nth-child(6) { animation-delay: 1.2s; border-color: var(--pink); }
+
+        .skill-card:hover {
+            transform: translateY(-10px) rotate(2deg);
+            box-shadow: 0 20px 40px rgba(255, 107, 157, 0.4);
+        }
+
+        .skill-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .skill-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--yellow);
+            position: relative;
+            z-index: 1;
+        }
+
+        .skill-level {
+            background: rgba(0, 0, 0, 0.3);
+            height: 10px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .skill-progress {
+            height: 100%;
+            background: linear-gradient(90deg, var(--pink), var(--purple));
+            border-radius: 10px;
+            animation: fillProgress 2s ease-out backwards;
+        }
+
+        /* Projects Section */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .project-card {
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            border: 3px solid var(--blue);
+            border-radius: 25px;
+            padding: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            animation: fadeInUp 0.8s ease-out backwards;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .project-card:nth-child(1) { animation-delay: 0.3s; }
+        .project-card:nth-child(2) { animation-delay: 0.6s; }
+        .project-card:nth-child(3) { animation-delay: 0.9s; }
+
+        .project-card::before {
+            content: 'NEW!';
+            position: absolute;
+            top: 20px;
+            right: -30px;
+            background: var(--yellow);
+            color: var(--dark);
+            padding: 5px 40px;
+            font-weight: 700;
+            transform: rotate(45deg);
+            font-size: 0.8rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            z-index: 10;
+        }
+
+        .project-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 20px 50px rgba(76, 201, 240, 0.4);
+            border-color: var(--pink);
+        }
+
+        .project-header {
+            background: linear-gradient(135deg, var(--blue), var(--purple));
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .project-header h3 {
+            font-size: 1.8rem;
+            font-family: 'Permanent Marker', cursive;
+            margin-bottom: 0.5rem;
+        }
+
+        .project-body {
+            padding: 2rem;
+        }
+
+        .project-tags {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+
+        .tag {
+            background: var(--pink);
+            color: white;
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        /* Contact Section */
+        .contact-card {
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(15px);
+            border: 3px solid var(--blue);
+            border-radius: 30px;
+            padding: 3rem;
+            text-align: center;
+            animation: slideInRight 1s ease-out;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 40px rgba(76, 201, 240, 0.3);
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .social-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--pink), var(--purple));
+            border-radius: 50%;
+            font-size: 2rem;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(255, 107, 157, 0.3);
+        }
+
+        .social-link:hover {
+            transform: translateY(-10px) rotate(360deg);
+            box-shadow: 0 20px 40px rgba(255, 107, 157, 0.5);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(0, 0, 0, 0.5);
+            margin-top: 3rem;
+        }
+
+        /* Animations */
+        @keyframes gradient-shift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes spin {
+            from { transform: translateY(-50%) rotate(0deg); }
+            to { transform: translateY(-50%) rotate(360deg); }
+        }
+
+        @keyframes rotate-bg {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes fillProgress {
+            from { width: 0; }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 3rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .section-title::before,
+            .section-title::after {
+                display: none;
+            }
+
+            .skills-grid,
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--dark);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, var(--pink), var(--purple));
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Video Background -->
+    <video id="video-background" autoplay loop muted playsinline>
+        <source src="snaptik_7520212764585905464_v2.mp4" type="video/mp4">
+    </video>
+    <div class="video-overlay"></div>
+
+    <!-- Background Shapes -->
+    <div class="bg-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+        
+        <!-- Anime decorations -->
+        <div class="anime-decor" style="top: 15%; left: 5%; animation-delay: 0s;">⭐</div>
+        <div class="anime-decor" style="top: 25%; right: 8%; animation-delay: 1s;">✨</div>
+        <div class="anime-decor" style="top: 70%; left: 15%; animation-delay: 2s;">🌸</div>
+        <div class="anime-decor" style="top: 85%; right: 20%; animation-delay: 1.5s;">💫</div>
+        <div class="anime-decor" style="top: 40%; left: 85%; animation-delay: 0.5s;">⚡</div>
+        <div class="anime-decor" style="top: 55%; right: 10%; animation-delay: 2.5s;">🎌</div>
+        
+        <!-- Sakura petals -->
+        <div class="sakura" style="left: 10%; animation-delay: 0s; animation-duration: 8s;"></div>
+        <div class="sakura" style="left: 25%; animation-delay: 2s; animation-duration: 10s;"></div>
+        <div class="sakura" style="left: 40%; animation-delay: 4s; animation-duration: 12s;"></div>
+        <div class="sakura" style="left: 60%; animation-delay: 1s; animation-duration: 9s;"></div>
+        <div class="sakura" style="left: 75%; animation-delay: 3s; animation-duration: 11s;"></div>
+        <div class="sakura" style="left: 90%; animation-delay: 5s; animation-duration: 10s;"></div>
+    </div>
+
+    <div class="content">
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-content">
+                <h1>WELCOME EVERYONE</h1>
+                <p class="subtitle">✨ nft • degen • airdrop ✨</p>
+                <a href="#about" class="cta-button">LETS GO</a>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section class="section" id="about">
+            <h2 class="section-title">ABOUT ME</h2>
+            <div class="about-card">
+                <h3>WASSUP DUDE</h3>
+                <p>
+                    hello, let me introduce myself, i'm <strong style="color: var(--yellow);">pajarr</strong>. let me tell you a little about myself. i've been working on web3 since 2020, about 6 years. i've gained quite a bit of experience in those 6 years. i'm happy to add any experience, as long as it's good
+                </p>
+                <p>
+                    <strong style="color: var(--pink);">thanks...</strong>
+                </p>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section class="section" id="projects">
+            <h2 class="section-title">LAST EXPERIENCE</h2>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <div class="project-header" style="padding: 0; background: none;">
+                        <img src="wcn.jpg" alt="WCN NFT" style="width: 100%; height: 300px; object-fit: cover;">
+                    </div>
+                    <div class="project-body">
+                        <a href="https://x.com/WCNetizens" target="_blank" style="text-decoration: none;">
+                            <h3 style="color: var(--pink); font-size: 1.8rem; margin-bottom: 1rem; cursor: pointer; transition: all 0.3s ease;">🍭 WCN</h3>
+                        </a>
+                        <div class="project-tags">
+                            <span class="tag">NFT</span>
+                            <span class="tag">Kawaii</span>
+                            <span class="tag">Angel</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-header" style="padding: 0; background: none;">
+                        <img src="moemoe.jpg" alt="MOEMOE NFT" style="width: 100%; height: 300px; object-fit: cover;">
+                    </div>
+                    <div class="project-body">
+                        <a href="https://x.com/moemoeLLC" target="_blank" style="text-decoration: none;">
+                            <h3 style="color: var(--blue); font-size: 1.8rem; margin-bottom: 1rem; cursor: pointer; transition: all 0.3s ease;">🧢 MOEMOE</h3>
+                        </a>
+                        <div class="project-tags">
+                            <span class="tag">NFT</span>
+                            <span class="tag">Sporty</span>
+                            <span class="tag">Street</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-header" style="padding: 0; background: none;">
+                        <img src="glitchy.jpg" alt="GLITCHY NFT" style="width: 100%; height: 300px; object-fit: cover;">
+                    </div>
+                    <div class="project-body">
+                        <a href="https://x.com/404bunnies" target="_blank" style="text-decoration: none;">
+                            <h3 style="color: var(--yellow); font-size: 1.8rem; margin-bottom: 1rem; cursor: pointer; transition: all 0.3s ease;">🐰 GLITCHY</h3>
+                        </a>
+                        <div class="project-tags">
+                            <span class="tag">NFT</span>
+                            <span class="tag">Urban</span>
+                            <span class="tag">Graffiti</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section class="section" id="contact">
+            <h2 class="section-title">SOCIAL MEDIA</h2>
+            <div class="contact-card">
+                <div class="social-links">
+                    <a href="https://x.com/pajawir" target="_blank" class="social-link" title="X (Twitter)">
+                        <img src="x-logo.jpg" alt="X" style="width: 40px; height: 40px; object-fit: contain;">
+                    </a>
+                    <a href="https://github.com/Fajaranang" target="_blank" class="social-link" title="GitHub">
+                        <img src="github-logo.jpg" alt="GitHub" style="width: 40px; height: 40px; object-fit: contain;">
+                    </a>
+                    <a href="https://t.me/turuuu12" target="_blank" class="social-link" title="Telegram">
+                        <img src="telegram-logo.jpg" alt="Telegram" style="width: 40px; height: 40px; object-fit: contain;">
+                    </a>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p style="font-size: 1.1rem;">
+            ⭐ created and will be developed by pajarr ⭐
+        </p>
+        <p style="margin-top: 0.5rem; opacity: 0.7;">
+            © 2026 all rights reserved | powered by pajar and team
+        </p>
+    </footer>
+
+    <script>
+        // Smooth scroll untuk link
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Parallax effect untuk shapes
+        document.addEventListener('mousemove', (e) => {
+            const shapes = document.querySelectorAll('.shape');
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+
+            shapes.forEach((shape, index) => {
+                const speed = (index + 1) * 50;
+                const xMove = (x - 0.5) * speed;
+                const yMove = (y - 0.5) * speed;
+                shape.style.transform = `translate(${xMove}px, ${yMove}px)`;
+            });
+        });
+
+        // Intersection Observer untuk animasi saat scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe semua cards
+        document.querySelectorAll('.skill-card, .project-card').forEach(card => {
+            observer.observe(card);
+        });
+
+        // Random color change untuk title saat hover
+        const title = document.querySelector('.hero h1');
+        title.addEventListener('mouseenter', () => {
+            title.style.animationDuration = '0.5s';
+        });
+        title.addEventListener('mouseleave', () => {
+            title.style.animationDuration = '3s';
+        });
+
+        // Sparkle effect saat klik
+        document.addEventListener('click', (e) => {
+            const sparkle = document.createElement('div');
+            sparkle.style.position = 'fixed';
+            sparkle.style.left = e.clientX + 'px';
+            sparkle.style.top = e.clientY + 'px';
+            sparkle.style.width = '10px';
+            sparkle.style.height = '10px';
+            sparkle.style.background = 'var(--yellow)';
+            sparkle.style.borderRadius = '50%';
+            sparkle.style.pointerEvents = 'none';
+            sparkle.style.zIndex = '9999';
+            sparkle.style.animation = 'sparkle 0.6s ease-out forwards';
+            document.body.appendChild(sparkle);
+
+            setTimeout(() => sparkle.remove(), 600);
+        });
+
+        // Tambah keyframe untuk sparkle animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes sparkle {
+                0% {
+                    transform: scale(0);
+                    opacity: 1;
+                }
+                100% {
+                    transform: scale(3);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
